@@ -13,31 +13,34 @@ fetch('https://pokeapi.co/api/v2/pokemon?limit=151')
             
             var pkName = pokemonSingle.name
             var pkDefault = pokemonSingle.sprites.front_default
-
+         
             document.getElementById('pokemon-card').innerHTML += `
-            <div class="pokemon-single">
-                <img src="${pkDefault}">
-                <span class="pokemon-name"><a href="#header">${pkName}</a></span>
-            </div>
-            `
-            var getName = document.querySelectorAll('.pokemon-name')
-            
-            for(let i = 0; i < getName.length; i++) {
-                getName[i].addEventListener('click', () => {
 
-                   
-                    
+            <div class="pokemon-single">
+                <a href="#header">
+                    <img src="${pkDefault}">
+                    <span class="pokemon-name">${pkName}</span>
+                </a>
+            </div>
+
+            `
+            var pokemonSingle = document.querySelectorAll('.pokemon-single')
+            var getName = document.querySelectorAll('.pokemon-name')
+
+            for(let i = 0; i < pokemonSingle.length && getName; i++) {
+                pokemonSingle[i].addEventListener('click', () => {
+
                     fetch('https://pokeapi.co/api/v2/pokemon/'+ getName[i].textContent)
                     .then(response => response.json())
                     .then(pokemonInfo => {
-                        
+
                         document.getElementById('pokedex-content').classList.add('resizer')
                         document.getElementById('pokedex-content').classList.remove('full-content')
                         
-                        infoSprite = pokemonInfo.sprites.other.dream_world.front_default
-                        infoName = pokemonInfo.name
-                        infoType1 = pokemonInfo.types[0].type.name
-                        infoType2 = pokemonInfo.types[1] ? 'type 2: ' + pokemonInfo.types[1].type.name : ''
+                        var infoSprite = pokemonInfo.sprites.other.dream_world.front_default
+                        var infoName = pokemonInfo.name
+                        var infoType1 = pokemonInfo.types[0].type.name
+                        var infoType2 = pokemonInfo.types[1] ? 'type 2: ' + pokemonInfo.types[1].type.name : ''
                         
                         document.getElementById('pokemon-content').innerHTML = `
 
@@ -66,24 +69,22 @@ fetch('https://pokeapi.co/api/v2/pokemon?limit=151')
                          </div>
 
                    `
+
                         for (let i = 0; i < pokemonInfo.moves.length; i++) {
                             
-                            moveName = 'name: ' + pokemonInfo.moves[i].move.name
-                            moveMethod = 'method: ' + pokemonInfo.moves[i].version_group_details[0].move_learn_method.name
-                            moveLevel = ' level: ' + pokemonInfo.moves[i].version_group_details[0].level_learned_at
+                            var moveName = 'name: ' + pokemonInfo.moves[i].move.name
+                            var moveMethod = 'method: ' + pokemonInfo.moves[i].version_group_details[0].move_learn_method.name
+                            var moveLevel = ' level: ' + pokemonInfo.moves[i].version_group_details[0].level_learned_at
                             
                             document.getElementById('move-box').innerHTML += `
                             
                             <div class="move-single">
-                                <span>${moveName}</span>
-                                <br>
-                                <span>${moveMethod}</span>
-                                <br>
+                                <span>${moveName}</span><br>
+                                <span>${moveMethod}</span><br>
                                 <span>${moveLevel}</span>
                             </div>
                             
                             `
-
                         }
                     })
                 })
